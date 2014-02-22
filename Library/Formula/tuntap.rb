@@ -7,6 +7,12 @@ class Tuntap < Formula
   head 'git://git.code.sf.net/p/tuntaposx/code', :branch => 'master'
 
   def install
+    %w[tuntap/src/tap/makefile tuntap/src/tap/makefile].each do |makefile|
+      inreplace makefile do |s|
+        s.gsub! /(-arch \S+ ?)+/, ''
+      end
+    end
+      
     ENV.j1 # to avoid race conditions (can't open: ../tuntap.o)
     cd 'tuntap' do
       # Makefile doesn't take these from the environment
